@@ -215,9 +215,11 @@ class SelScrape(SearchEngineScrape, threading.Thread):
     def _get_Chrome(self):
         try:
             if self.proxy:
+
                 chrome_ops = webdriver.ChromeOptions()
-                chrome_ops.add_argument(
-                    '--proxy-server={}://{}:{}'.format(self.proxy.proto, self.proxy.host, self.proxy.port))
+                proxy_string = '--proxy-server={}://{}:{}'.format(self.proxy.proto, self.proxy.host,
+                                                                  self.proxy.port)
+                chrome_ops.add_argument(proxy_string)
                 self.webdriver = webdriver.Chrome(chrome_options=chrome_ops)
             else:
                 self.webdriver = webdriver.Chrome()#service_log_path='/tmp/chromedriver_log.log')
@@ -496,7 +498,7 @@ class SelScrape(SearchEngineScrape, threading.Thread):
             else:
 
                 try:
-                    WebDriverWait(self.webdriver, 5).\
+                    WebDriverWait(self.webdriver, 10).\
             until(EC.text_to_be_present_in_element((By.CSS_SELECTOR, selector), str(self.page_number)))
                 except TimeoutException as e:
                     self._save_debug_screenshot()

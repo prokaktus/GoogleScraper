@@ -3,6 +3,6 @@ selenium
 cssselect
 requests
 PyMySql
-sqlalchemy
+sqlalchemy==1.0.13
 aiohttp
 # redis

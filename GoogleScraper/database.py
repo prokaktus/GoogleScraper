@@ -50,7 +50,10 @@ class ScraperSearch(Base):
 
     def __str__(self):
         return '<ScraperSearch[{id}] scraped for {number_search_queries} unique keywords. Started scraping: {started_' \
-               'searching} and stopped: {stopped_searching}>'.format(**self.__dict__)
+               'searching} and stopped: {stopped_searching}>'.format(id=self.id,
+                    number_search_queries=self.number_search_queries,
+                    started_searching=self.started_searching,
+                    stopped_searching=self.stopped_searching)
 
     def __repr__(self):
         return self.__str__()
