@@ -204,7 +204,9 @@ class HttpScrape(SearchEngineScrape, threading.Timer):
                                              'the proxy check.'
 
         online = False
-        status = 'Proxy check failed: {host}:{port} is not used while requesting'.format(**self.proxy.__dict__)
+        status = 'Proxy check failed: {host}:{port} is not used while requesting'.format(
+            host=self.proxy.host, port=self.proxy.port
+        )
         ipinfo = {}
 
         try:
