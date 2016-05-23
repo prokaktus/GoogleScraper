@@ -5,6 +5,7 @@ import json
 import datetime
 import socket
 from urllib.parse import urlencode
+from functools import partial
 
 import GoogleScraper.socks as socks
 from GoogleScraper.scraping import SearchEngineScrape, get_base_search_url_by_search_engine
@@ -144,6 +145,8 @@ class HttpScrape(SearchEngineScrape, threading.Timer):
         # Bind the requests module to this instance such that each
         # instance may have an own proxy
         self.requests = __import__('requests')
+        if self.request_proxies:
+            self.requests.get = partial(self.requests.get, proxies=self.request_proxies)
 
         # initialize the GET parameters for the search request
         self.search_params = {}
@@ -182,6 +185,11 @@ class HttpScrape(SearchEngineScrape, threading.Timer):
             'socks5': 2,
             'http': 3
         }
+        if self.proxy:
+            self.request_proxies = {
+                'http': 'http://{}:{}'.format(self.proxy.host, self.proxy.port),
+                'https': 'https://{}:{}'.format(self.proxy.host, self.proxy.port)
+            }
         # Patch the socket module
         # rdns is by default on true. Never use rnds=False with TOR, otherwise you are screwed!
         socks.setdefaultproxy(pmapping.get(self.proxy.proto), self.proxy.host, int(self.proxy.port), rdns=True)
