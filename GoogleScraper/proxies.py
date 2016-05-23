@@ -7,7 +7,7 @@ import re
 from GoogleScraper import database
 import logging
 
-Proxy = namedtuple('Proxy', 'proto, host, port, username, password')
+Proxy = namedtuple('Proxy', ['proto', 'host', 'port', 'username', 'password'])
 logger = logging.getLogger(__name__)
 
 
