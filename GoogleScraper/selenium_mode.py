@@ -235,12 +235,14 @@ class SelScrape(SearchEngineScrape, threading.Thread):
                                        1)  # this means that the proxy is user set, regardless of the type
                 if self.proxy.proto.lower().startswith('socks'):
                     profile.set_preference("network.proxy.socks", self.proxy.host)
-                    profile.set_preference("network.proxy.socks_port", self.proxy.port)
+                    profile.set_preference("network.proxy.socks_port", int(self.proxy.port))
                     profile.set_preference("network.proxy.socks_version", 5 if self.proxy.proto[-1] == '5' else 4)
                     profile.update_preferences()
                 elif self.proxy.proto == 'http':
                     profile.set_preference("network.proxy.http", self.proxy.host)
-                    profile.set_preference("network.proxy.http_port", self.proxy.port)
+                    profile.set_preference("network.proxy.http_port", int(self.proxy.port))
+                    profile.set_preference("network.proxy.ssl", self.proxy.host)
+                    profile.set_preference("network.proxy.ssl_port", int(self.proxy.port))
                 else:
                     raise ValueError('Invalid protocol given in proxyfile.')
                 profile.update_preferences()
@@ -500,7 +502,7 @@ class SelScrape(SearchEngineScrape, threading.Thread):
                     self._save_debug_screenshot()
                     content = self.webdriver.find_element_by_css_selector(selector).text
                     raise Exception('Pagenumber={} did not appear in navigation. Got "{}" instead'\
-                                    .format(self.page_number), content)
+                                    .format(self.page_number, content))
 
         elif self.search_type == 'image':
             self.wait_until_title_contains_keyword()
