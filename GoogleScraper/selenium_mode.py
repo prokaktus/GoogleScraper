@@ -151,7 +151,7 @@ class SelScrape(SearchEngineScrape, threading.Thread):
     def switch_proxy(self, proxy):
         """Switch the proxy on the communication channel."""
 
-    def proxy_check(self, proxy):
+    def proxy_check(self):
         assert self.proxy and self.webdriver, 'Scraper instance needs valid webdriver and proxy instance to make the proxy check'
 
         online = False

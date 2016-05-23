@@ -191,7 +191,7 @@ class HttpScrape(SearchEngineScrape, threading.Timer):
     def switch_proxy(self, proxy):
         super().switch_proxy()
 
-    def proxy_check(self, proxy):
+    def proxy_check(self):
         assert self.proxy and self.requests, 'ScraperWorker needs valid proxy instance and requests library to make ' \
                                              'the proxy check.'
 
