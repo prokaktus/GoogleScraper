@@ -187,9 +187,12 @@ class SelScrape(SearchEngineScrape, threading.Thread):
         Saves a debug screenshot of the browser window to figure
         out what went wrong.
         """
-        tempdir = tempfile.gettempdir()
-        location = os.path.join(tempdir, '{}_{}_debug_screenshot.png'.format(self.search_engine_name, self.browser_type))
-        self.webdriver.get_screenshot_as_file(location)
+        # tempdir = tempfile.gettempdir()
+        debug_dir = './debug/'
+        if os.path.exists(debug_dir):
+            location = os.path.join(debug_dir, '{}_{}_{}_debug_screenshot.png'.format(self.search_engine_name,
+                self.browser_type, time.time()))
+            self.webdriver.get_screenshot_as_file(location)
 
     def _set_xvfb_display(self):
         # TODO: should we check the format of the config?
@@ -531,6 +534,8 @@ class SelScrape(SearchEngineScrape, threading.Thread):
 
             self.search_input = self._wait_until_search_input_field_appears()
 
+            self._save_debug_screenshot()
+
             if self.search_input is False and self.config.get('stop_on_detection'):
                 self.status = 'Malicious request detected'
                 return
@@ -540,6 +545,7 @@ class SelScrape(SearchEngineScrape, threading.Thread):
                 self.search_input = self.handle_request_denied()
 
             if self.search_input:
+                time.sleep(1.25)
                 self.search_input.clear()
                 time.sleep(.25)
 
